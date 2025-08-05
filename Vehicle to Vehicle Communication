@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrafficRoutePrediction1</title><script
+src ="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<style type="text/css">
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px;
+padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px;
+padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px;
+padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px;
+padding-right: 5px; }
+.highlight .hll { background-color: var(--jp-cell-editor-active-background) }
+.highlight { background: var(--jp-cell-editor-background);
+color: var(--jp-mirror-editor-variable-color) }
+.highlight .c { color: var(--jp-mirror-editor-comment-color); font-style: italic } /* Comment */
+.highlight .err { color: var(--jp-mirror-editor-error-color) } /* Error */
+.highlight .k { color: var(--jp-mirror-editor-keyword-color); font-weight: bold } /* Keyword */
+.highlight .o { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator */
+.highlight .p { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation */
+.highlight .ch { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.Hashbang */
+.highlight .cm { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.Multiline */
+.highlight .cp { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.Preproc */
+.highlight .cpf { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.PreprocFile */
+.highlight .c1 { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.Single */
+.highlight .cs { color: var(--jp-mirror-editor-comment-color); font-style: italic
+} /* Comment.Special */
+.highlight .kc { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Constant */
+.highlight .kd { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Declaration */
+.highlight .kn { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Namespace */
+.highlight .kp { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Pseudo */
+.highlight .kr { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Reserved */
+.highlight .kt { color: var(--jp-mirror-editor-keyword-color); font-weight: bold
+} /* Keyword.Type */
+.highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
+.highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
+.highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold
+} /* Operator.Word */
+.highlight .pm { color: var(--jp-mirror-editor-punctuation-color)
+} /* Punctuation.Marker */
+.highlight .w { color: var(--jp-mirror-editor-variable-color)
+} /* Text.Whitespace */
+.highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
+.highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
+.highlight .mh { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Hex */
+.highlight .mi { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer */
+.highlight .mo { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Oct */
+.highlight .sa { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Affix */
+.highlight .sb { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Backtick */
+.highlight .sc { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Char */
+.highlight .dl { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Delimiter */
+.highlight .sd { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Doc */
+.highlight .s2 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Double */
+.highlight .se { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Escape */
+.highlight .sh { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Heredoc */
+.highlight .si { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Interpol */
+.highlight .sx { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Other */
+.highlight .sr { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Regex */
+.highlight .s1 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Single */
+.highlight .ss { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Symbol */
+.highlight .il { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer.Long */
+</style>
+<style type="text/css">
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Distributed under the terms of the Modified BSD License.
+|----------------------------------------------------------------------------*/
+/*
+* Mozilla scrollbar styling
+*/
+/* use standard opaque scrollbars for most nodes */
+[data-jp-theme-scrollbars='true'] {
+scrollbar-color: rgb(var(--jp-scrollbar-thumb-color))
+var(--jp-scrollbar-background-color);
+}
+/* for code nodes, use a transparent style of scrollbar. These selectors
+* will match lower in the tree, and so will override the above */
+[data-jp-theme-scrollbars='true'] .CodeMirror-hscrollbar,
+[data-jp-theme-scrollbars='true'] .CodeMirror-vscrollbar {
+scrollbar-color: rgba(var(--jp-scrollbar-thumb-color), 0.5) transparent;
+}
+/* tiny scrollbar */
+.jp-scrollbar-tiny {
+scrollbar-color: rgba(var(--jp-scrollbar-thumb-color), 0.5) transparent;
+scrollbar-width: thin;
+}
+/*
+* Webkit scrollbar styling
+*/
+/* use standard opaque scrollbars for most nodes */
+[data-jp-theme-scrollbars='true'] ::-webkit-scrollbar,
+[data-jp-theme-scrollbars='true'] ::-webkit-scrollbar-corner {
+background: var(--jp-scrollbar-background-color);
+}
+[data-jp-theme-scrollbars='true'] ::-webkit-scrollbar-thumb {
+background: rgb(var(--jp-scrollbar-thumb-color));
+border: var(--jp-scrollbar-thumb-margin) solid transparent;
+background-clip: content-box;
+border-radius: var(--jp-scrollbar-thumb-radius);
+}
+[data-jp-theme-scrollbars='true'] ::-webkit-scrollbar-track:horizontal {
+border-left: var(--jp-scrollbar-endpad) solid
+var(--jp-scrollbar-background-color);
+border-right: var(--jp-scrollbar-endpad) solid
+var(--jp-scrollbar-background-color);
+}
+[data-jp-theme-scrollbars='true'] ::-webkit-scrollbar-track:vertical {
+border-top: var(--jp-scrollbar-endpad) solid
+var(--jp-scrollbar-background-color);
+border-bottom: var(--jp-scrollbar-endpad) solid
+var(--jp-scrollbar-background-color);
+}
+/* for code nodes, use a transparent style of scrollbar */
+[data-jp-theme-scrollbars='true'] .CodeMirror-hscrollbar::-webkit-scrollbar
+data-jp-theme-scrollbars='true'] .CodeMirror-vscrollbar::-webkit-scrollbar,
+[data-jp-theme-scrollbars='true'] .CodeMirror-hscrollbar::-webkit-scrollbar-corner,
+[data-jp-theme-scrollbars='true'] .CodeMirror-vscrollbar::-webkit-scrollbar-corner {
+background-color: transparent;
+}
+[data-jp-theme-scrollbars='true']
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb,
+[data-jp-theme-scrollbars='true']
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
+background: rgba(var(--jp-scrollbar-thumb-color), 0.5);
+border: var(--jp-scrollbar-thumb-margin) solid transparent;
+background-clip: content-box;
+border-radius: var(--jp-scrollbar-thumb-radius);
+}
+[data-jp-theme-scrollbars='true'] .CodeMirror-hscrollbar::-webkit-scrollbar-track:horizontal
+{
+border-left: var(--jp-scrollbar-endpad) solid transparent;
+border-right: var(--jp-scrollbar-endpad) solid transparent;
+}
+[data-jp-theme-scrollbars='true'] .CodeMirror-vscrollbar::-webkit-scrollbar-track:vertical
+{
+border-top: var(--jp-scrollbar-endpad) solid transparent;
+border-bottom: var(--jp-scrollbar-endpad) solid transparent;
+}
+/* tiny scrollbar */
+.jp-scrollbar-tiny::-webkit-scrollbar,
+.jp-scrollbar-tiny::-webkit-scrollbar-corner {
+background-color: transparent;
+height: 4px;
+width: 4px;
+}
+jp-scrollbar-tiny::-webkit-scrollbar-thumb {
+background: rgba(var(--jp-scrollbar-thumb-color), 0.5);
+}
+.jp-scrollbar-tiny::-webkit-scrollbar-track:horizontal {
+border-left: 0px solid transparent;
+border-right: 0px solid transparent;
+}
+
+import random
+import time
+import threading
+import pygame
+import sys
+# Default values of signal timers
+defaultGreen = {0:10, 1:10, 2:10, 3:10}
+defaultRed = 150
+defaultYellow = 5
+signals = []
+noOfSignals = 4
+currentGreen = 0 # Indicates which signal is green currently
+nextGreen = (currentGreen+1)%noOfSignals # Indicates which signal will turn green next
+currentYellow = 0 # Indicates whether yellow signal is on or off
+speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'bike':2.5} # average speeds of vehicles
+# Coordinates of vehicles' start
+x = {'right':[0,0,0], 'down':[755,727,697], 'left':[1400,1400,1400], 'up':[602,627,657]}
+y = {'right':[348,370,398], 'down':[0,0,0], 'left':[498,466,436], 'up':[800,800,800]}
+vehicles = {'right': {0:[], 1:[], 2:[], 'crossed':0}, 'down': {0:[], 1:[], 2:[], 'crossed':0},
+'left': {0:[], 1:[], 2:[], 'crossed':0}, 'up': {0:[], 1:[], 2:[], 'crossed':0}}
+vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'bike'}
+directionNumbers = {0:'right', 1:'down', 2:'left', 3:'up'}
+# Coordinates of signal image, timer, and vehicle count
+signalCoods = [(530,230),(810,230),(810,570),(530,570)]
+signalTimerCoods = [(530,210),(810,210),(810,550),(530,550)]
+# Coordinates of stop lines
+stopLines = {'right': 590, 'down': 330, 'left': 800, 'up': 535}
+defaultStop = {'right': 580, 'down': 320, 'left': 810, 'up': 545}
+# stops = {'right': [580,580,580], 'down': [320,320,320], 'left': [810,810,810], 'up': [545,545,545]}
+# Gap between vehicles
+stoppingGap = 15 # stopping gap
+movingGap = 15 # moving gap
+pygame.init()
+simulation = pygame.sprite.Group()
+class TrafficSignal:
+def _init_(self, red, yellow, green):
+self.red = red
+self.yellow = yellow
+self.green = green
+self.signalText = ""
+class Vehicle(pygame.sprite.Sprite):
+def _init_(self, lane, vehicleClass, direction_number, direction):
+pygame.sprite.Sprite._init_(self)
+self.lane = lane
+self.vehicleClass = vehicleClass
+self.speed = speeds[vehicleClass]
+self.direction_number = direction_number
+self.direction = direction
+self.x = x[direction][lane]
+self.y = y[direction][lane]
+self.crossed = 0
+vehicles[direction][lane].append(self)
+self.index = len(vehicles[direction][lane]) - 1
+path = "images/" + direction + "/" + vehicleClass + ".png"
+self.image = pygame.image.load(path)
+if(len(vehicles[direction][lane])>1 and vehicles[direction][lane][self.index-1].crossed==0):
+# if more than 1 vehicle in the lane of vehicle before it has crossed stop line
+if(direction=='right'):
+self.stop = vehicles[direction][lane][self.index-1].stop - vehicles[direction][lane]
+[self.index-1].image.get_rect().width - stoppingGap
+# setting stop coordinate as: stop coordinate of next vehicle - width of next vehicle - gap
+elif(direction=='left'):
+self.stop = vehicles[direction][lane][self.index-1].stop + vehicles[direction][lane]
+[self.index-1].image.get_rect().width + stoppingGap
+elif(direction=='down'):
+self.stop = vehicles[direction][lane][self.index-1].stop - vehicles[direction][lane]
+[self.index-1].image.get_rect().height - stoppingGap
+elif(direction=='up'):
+self.stop = vehicles[direction][lane][self.index-1].stop + vehicles[direction][lane]
+[self.index-1].image.get_rect().height + stoppingGap
+else:
+self.stop = defaultStop[direction]
+# Set new starting and stopping coordinate
+if(direction=='right'):
+temp = self.image.get_rect().width + stoppingGap
+x[direction][lane] -= temp
+elif(direction=='left'):
+temp = self.image.get_rect().width + stoppingGap
+x[direction][lane] += temp
+elif(direction=='down'):
+temp = self.image.get_rect().height + stoppingGap
+y[direction][lane] -= temp
+elif(direction=='up'):
+temp = self.image.get_rect().height + stoppingGap
+y[direction][lane] += temp
+simulation.add(self)
+def render(self, screen):
+screen.blit(self.image, (self.x, self.y))
+def move(self):
+if(self.direction=='right'):
+if(self.crossed==0 and self.x+self.image.get_rect().width>stopLines[self.direction]):
+# if the image has crossed stop line now
+self.crossed = 1
+if((self.x+self.image.get_rect().width<=self.stop or self.crossed == 1 or
+(currentGreen==0 and currentYellow==0)) and (self.index==0
+or self.x+self.image.get_rect().width<(vehicles[self.direction][self.lane]
+[self.index-1].x - movingGap))):
+self.x += self.speed # move the vehicle
+elif(self.direction=='down'):
+if(self.crossed==0 and self.y+self.image.get_rect().height>stopLines[self.direction]):
+self.crossed = 1
+if((self.y+self.image.get_rect().height<=self.stop or self.crossed == 1 or
+(currentGreen==1 and currentYellow==0)) and (self.index==0
+or self.y+self.image.get_rect().height<(vehicles[self.direction][self.lane]
+[self.index-1].y - movingGap))):
+self.y += self.speed
+elif(self.direction=='left'):
+if(self.crossed==0 and self.x<stopLines[self.direction]):
+self.crossed = 1
+if((self.x>=self.stop or self.crossed == 1 or (currentGreen==2 and
+currentYellow==0)) and (self.index==0 or self.x>(vehicles[self.direction][self.lane]
+[self.index-1].x + vehicles[self.direction][self.lane]
+[self.index-1].image.get_rect().width + movingGap))):
+self.x -= self.speed
+elif(self.direction=='up'):
+if(self.crossed==0 and self.y<stopLines[self.direction]):
+self.crossed = 1
+if((self.y>=self.stop or self.crossed == 1 or (currentGreen==3 and
+currentYellow==0)) and (self.index==0 or self.y>(vehicles[self.direction][self.lane]
+[self.index-1].y + vehicles[self.direction][self.lane]
+[self.index-1].image.get_rect().height + movingGap))):
+self.y -= self.speed
+# Initialization of signals with default values
+def initialize():
+ts1 = TrafficSignal(0, defaultYellow, defaultGreen[0])
+signals.append(ts1)
+ts2 = TrafficSignal(ts1.red+ts1.yellow+ts1.green, defaultYellow, defaultGreen[1])
+signals.append(ts2)
+ts3 = TrafficSignal(defaultRed, defaultYellow, defaultGreen[2])
+signals.append(ts3)
+ts4 = TrafficSignal(defaultRed, defaultYellow, defaultGreen[3])
+signals.append(ts4)
+repeat()
+def repeat():
+global currentGreen, currentYellow, nextGreen
+while(signals[currentGreen].green>0): # while the timer of current green signal is not zero
+updateValues()
+time.sleep(1)
+currentYellow = 1 # set yellow signal on
+# reset stop coordinates of lanes and vehicles
+for i in range(0,3):
+for vehicle in vehicles[directionNumbers[currentGreen]][i]:
+vehicle.stop = defaultStop[directionNumbers[currentGreen]]
+while(signals[currentGreen].yellow>0):
+updateValues()
+time.sleep(1)
+currentYellow = 0 # set yellow signal off
+# reset all signal times of current signal to default times
+signals[currentGreen].green = defaultGreen[currentGreen]
+signals[currentGreen].yellow = defaultYellow
+signals[currentGreen].red = defaultRed
+currentGreen = nextGreen # set next signal as green signal
+nextGreen = (currentGreen+1)%noOfSignals # set next green signal
+signals[nextGreen].red = signals[currentGreen].yellow+signals[currentGreen].green
+repeat()
+# Update values of the signal timers after every second
+def updateValues():
+for i in range(0, noOfSignals):
+if(i==currentGreen):
+if(currentYellow==0):
+signals[i].green-=1
+else:
+signals[i].yellow-=1
+else:
+signals[i].red-=1
+# Generating vehicles in the simulation
+def generateVehicles():
+while(True):
+vehicle_type = random.randint(0,3)
+lane_number = random.randint(1,2)
+temp = random.randint(0,99)
+direction_number = 0
+dist = [25,50,75,100]
+if(temp<dist[0]):
+direction_number = 0
+elif(temp<dist[1]):
+direction_number = 1
+elif(temp<dist[2]):
+direction_number = 2
+elif(temp<dist[3]):
+direction_number = 3
+Vehicle(lane_number, vehicleTypes [vehicle_type]
+,direction_number, directionNumbers[direction_number])
+time.sleep(1)
+class Simulation:
+def runSimulation(self):
+thread1 = threading.Thread(name="initialization",target=initialize, args=())
+thread1.daemon = True
+thread1.start()
+# Colours
+black = (0, 0, 0)
+white = (255, 255, 255)
+# Screensize
+screenWidth = 1400
+screenHeight = 800
+screenSize = (screenWidth, screenHeight)
+# Setting background image i.e. image of intersection
+background = pygame.image.load('images/intersection.png')
+screen = pygame.display.set_mode(screenSize)
+pygame.display.set_caption("SIMULATION")
+# Loading signal images and font
+redSignal = pygame.image.load('images/signals/red.png')
+yellowSignal = pygame.image.load('images/signals/yellow.png')
+greenSignal = pygame.image.load('images/signals/green.png')
+font = pygame.font.Font(None, 30)
+thread2 = threading.Thread(name="generateVehicles",target=generateVehicles,
+args=()) # Generating vehicles
+thread2.daemon = True
+thread2.start()
+while True:
+for event in pygame.event.get():
+if event.type == pygame.QUIT:
+sys.exit()
+screen.blit(background,(0,0)) # display background in simulation
+for i in range(0,noOfSignals):
+if(i==currentGreen):
+if(currentYellow==1):
+signals[i].signalText = signals[i].yellow
+screen.blit(yellowSignal, signalCoods[i])
+else:
+signals[i].signalText = signals[i].green
+screen.blit(greenSignal, signalCoods[i])
+else:
+if(signals[i].red<=10):
+signals[i].signalText = signals[i].red
+else:
+signals[i].signalText = "---"
+screen.blit(redSignal, signalCoods[i])
+signalTexts = ["","","",""]
+# display signal timer
+for i in range(0,noOfSignals):
+signalTexts[i] = font.render(str(signals[i].signalText), True, white, black)
+screen.blit(signalTexts[i],signalTimerCoods[i])
+# display the vehicles
+for vehicle in simulation:
+screen.blit(vehicle.image, [vehicle.x, vehicle.y])
+vehicle.move()
+print.display.update()
+#Main()
